@@ -1,0 +1,434 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  background: #000;
+}
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.video-journey {
+  position: relative;
+  height: 500vh;
+}
+
+.video-stage {
+  position: sticky;
+  top: 0;
+  display: grid;
+  width: min(100vw, 56.25vh, 1080px);
+  width: min(100vw, 56.25dvh, 1080px);
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  margin-inline: auto;
+  place-items: center;
+  overflow: hidden;
+  background: #000;
+}
+
+.story-video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #000;
+  touch-action: pan-y;
+}
+
+.journey-cue {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 20px;
+  border: 1px solid rgb(255 255 255 / 72%);
+  border-radius: 999px;
+  color: #fffaf4;
+  background: rgb(37 25 22 / 58%);
+  box-shadow: 0 8px 26px rgb(18 12 10 / 28%);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.journey-cue:hover {
+  background: rgb(37 25 22 / 76%);
+}
+
+.journey-cue:focus-visible {
+  outline: 3px solid #fffaf4;
+  outline-offset: 4px;
+}
+
+.journey-cue[hidden],
+.wedding-venue[hidden] {
+  display: none;
+}
+
+.scroll-cue {
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.scroll-cue::after {
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  content: "";
+  transform: translateY(-2px) rotate(45deg);
+  animation: scroll-cue-bounce 1.4s ease-in-out infinite;
+}
+
+@keyframes scroll-cue-bounce {
+  0%,
+  100% {
+    transform: translateY(-3px) rotate(45deg);
+  }
+
+  50% {
+    transform: translateY(3px) rotate(45deg);
+  }
+}
+
+.wedding-venue {
+  position: absolute;
+  z-index: 1;
+  top: 37.5%;
+  left: 50%;
+  width: max-content;
+  max-width: 90%;
+  margin: 0;
+  color: #70584d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 4.5vw, 1.125rem);
+  letter-spacing: 0.035em;
+  text-align: center;
+  text-shadow: 0 1px 5px rgb(255 250 235 / 75%);
+  transform: translateX(-50%);
+}
+
+.event-map-tab {
+  position: absolute;
+  z-index: 1;
+  top: 37%;
+  left: 50%;
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid rgb(255 255 255 / 72%);
+  border-radius: 999px;
+  color: #171311;
+  background: rgb(255 255 255 / 20%);
+  box-shadow: 0 2px 12px rgb(34 18 18 / 18%);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+}
+
+.event-map-tab[data-event-map="haldi"] {
+  top: calc(33% + 3mm);
+  min-height: 26px;
+  padding-inline: 12px;
+  font-size: 0.72rem;
+}
+
+.event-map-tab[data-event-map="sangeet"] {
+  top: 34%;
+}
+
+.event-map-tab[data-event-map="wedding"] {
+  top: 41%;
+}
+
+.event-map-tab[hidden] {
+  display: none;
+}
+
+.event-map-tab:hover,
+.event-map-tab:focus-visible {
+  color: #000;
+  background: rgb(255 255 255 / 20%);
+}
+
+.event-map-tab:focus-visible {
+  outline: 3px solid #a47762;
+  outline-offset: 3px;
+}
+
+.closing-screen {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(24px, 6vw, 56px);
+  color: #451d24;
+  text-align: center;
+  background: #f9f4ed;
+}
+
+.closing-background {
+  position: absolute;
+  z-index: -2;
+  inset: -14px;
+  background-image: url("countdown-background.jpeg");
+  background-position: center 58%;
+  background-size: cover;
+  filter: blur(5px);
+  transform: scale(1.03);
+}
+
+.closing-screen::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(255 252 247 / 56%), rgb(255 249 241 / 35%));
+  content: "";
+}
+
+.closing-content {
+  width: min(100%, 520px);
+  padding: clamp(26px, 7vw, 48px) clamp(18px, 5vw, 36px);
+  border: 1px solid rgb(102 63 58 / 20%);
+  border-radius: 24px;
+  background: rgb(255 251 245 / 48%);
+  box-shadow: 0 18px 60px rgb(75 46 40 / 10%);
+  backdrop-filter: blur(3px);
+}
+
+.closing-eyebrow,
+.closing-date,
+.closing-note {
+  margin: 0;
+  letter-spacing: 0.14em;
+}
+
+.closing-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.closing-content h1 {
+  margin: 14px 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 8vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.closing-date {
+  font-size: 0.8rem;
+}
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(7px, 2vw, 14px);
+  margin: clamp(24px, 7vw, 38px) 0;
+}
+
+.countdown-unit {
+  display: grid;
+  min-height: 82px;
+  align-content: center;
+  gap: 5px;
+  border-radius: 12px;
+  color: #fff8f1;
+  background: #491b22;
+}
+
+.countdown-value {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.7rem, 7vw, 2.5rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.rsvp-button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 26px;
+  border: 1px solid #491b22;
+  border-radius: 999px;
+  color: #fff8f1;
+  background: #491b22;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.rsvp-button:hover,
+.rsvp-button:focus-visible {
+  color: #491b22;
+  background: transparent;
+}
+
+.rsvp-button:focus-visible {
+  outline: 3px solid #a47762;
+  outline-offset: 3px;
+}
+
+.rsvp-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+  padding: clamp(16px, 4vw, 22px);
+  border: 1px solid rgb(102 63 58 / 22%);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 54%);
+  text-align: left;
+}
+
+.rsvp-form[hidden],
+.rsvp-error[hidden] {
+  display: none;
+}
+
+.rsvp-events {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rsvp-events legend,
+.guest-count-label {
+  margin-bottom: 4px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.rsvp-option {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid rgb(73 27 34 / 16%);
+  border-radius: 10px;
+  background: rgb(255 251 245 / 72%);
+  cursor: pointer;
+}
+
+.rsvp-option input {
+  width: 18px;
+  height: 18px;
+  accent-color: #491b22;
+}
+
+.guest-count-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid rgb(73 27 34 / 30%);
+  border-radius: 10px;
+  color: #451d24;
+  background: #fffdfa;
+  font: inherit;
+}
+
+.rsvp-submit {
+  min-height: 46px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff8f1;
+  background: #491b22;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rsvp-submit:focus-visible,
+.rsvp-option:focus-within,
+.guest-count-input:focus-visible {
+  outline: 3px solid #a47762;
+  outline-offset: 3px;
+}
+
+.rsvp-error {
+  margin: 0;
+  color: #8d1c24;
+  font-size: 0.88rem;
+}
+
+.closing-note {
+  margin-top: 20px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 360px) {
+  .closing-content {
+    padding-inline: 14px;
+  }
+
+  .countdown {
+    gap: 5px;
+  }
+
+  .countdown-label {
+    font-size: 0.54rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsvp-button,
+  .journey-cue {
+    transition: none;
+  }
+
+  .scroll-cue::after {
+    animation: none;
+  }
+}

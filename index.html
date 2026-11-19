@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Wedding Invitation</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <section class="video-journey" aria-label="Wedding video">
+      <div class="video-stage">
+        <video class="story-video" muted playsinline preload="auto"
+          aria-label="Scroll to move through the wedding invitation">
+          <source src="wedding-invitation-1080p.mp4" type="video/mp4">
+        </video>
+        <button class="journey-cue scroll-cue" id="scroll-cue" type="button"
+          aria-label="Scroll to explore the invitation">
+          Scroll to explore
+        </button>
+        <p class="wedding-venue" aria-label="Wedding venue" hidden>
+          Venue - Kshana by the Sea
+        </p>
+        <a class="event-map-tab" data-event-map="haldi" href="https://share.google/k1Kt6zmdb8m5F8ncB"
+          target="_blank" rel="noopener noreferrer" aria-label="Open Haldi venue directions" hidden>
+          Map
+        </a>
+        <a class="event-map-tab" data-event-map="sangeet" href="https://share.google/k1Kt6zmdb8m5F8ncB"
+          target="_blank" rel="noopener noreferrer" aria-label="Open Sangeet venue directions" hidden>
+          Map
+        </a>
+        <a class="event-map-tab" data-event-map="wedding" href="https://share.google/xt9a34UGVEcLT5yi0"
+          target="_blank" rel="noopener noreferrer" aria-label="Open wedding venue directions" hidden>
+          Map
+        </a>
+      </div>
+    </section>
+    <section class="closing-screen" aria-labelledby="closing-title">
+      <div class="closing-background" aria-hidden="true"></div>
+      <div class="closing-content">
+        <p class="closing-eyebrow">THE CELEBRATION BEGINS</p>
+        <h1 id="closing-title">Counting down to forever</h1>
+        <p class="closing-date">14 December 2026 · 7:30 AM</p>
+        <div class="countdown" role="timer" aria-label="Countdown to the wedding">
+          <div class="countdown-unit">
+            <span class="countdown-value" id="countdown-days">--</span>
+            <span class="countdown-label">Days</span>
+          </div>
+          <div class="countdown-unit">
+            <span class="countdown-value" id="countdown-hours">--</span>
+            <span class="countdown-label">Hours</span>
+          </div>
+          <div class="countdown-unit">
+            <span class="countdown-value" id="countdown-minutes">--</span>
+            <span class="countdown-label">Minutes</span>
+          </div>
+          <div class="countdown-unit">
+            <span class="countdown-value" id="countdown-seconds">--</span>
+            <span class="countdown-label">Seconds</span>
+          </div>
+        </div>
+        <button class="rsvp-button" id="rsvp-toggle" type="button"
+          aria-expanded="false" aria-controls="rsvp-form">
+          RSVP
+        </button>
+        <form class="rsvp-form" id="rsvp-form" hidden>
+          <fieldset class="rsvp-events">
+            <legend>Which events will you attend?</legend>
+            <label class="rsvp-option">
+              <input type="checkbox" name="event" value="Sangeet">
+              <span>Sangeet</span>
+            </label>
+            <label class="rsvp-option">
+              <input type="checkbox" name="event" value="Haldi">
+              <span>Haldi</span>
+            </label>
+            <label class="rsvp-option">
+              <input type="checkbox" name="event" value="Wedding">
+              <span>Wedding</span>
+            </label>
+          </fieldset>
+          <label class="guest-count-label" for="guest-count">Number of guests</label>
+          <input class="guest-count-input" id="guest-count" name="guests"
+            type="number" min="1" step="1" value="1" required>
+          <p class="rsvp-error" id="rsvp-error" role="alert" hidden>
+            Please select at least one event.
+          </p>
+          <button class="rsvp-submit" type="submit">Continue to WhatsApp</button>
+        </form>
+        <p class="closing-note">We can’t wait to celebrate with you</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
