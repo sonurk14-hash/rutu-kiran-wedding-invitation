@@ -48,10 +48,22 @@ body {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   background: #000;
   touch-action: pan-y;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(100vw, 56.25vh, 1080px);
+  width: min(100vw, 56.25dvh, 1080px);
+  max-height: 100vh;
+  max-height: 100dvh;
+  aspect-ratio: 9 / 16;
+  transform: translate(-50%, -50%);
 }
 
 .journey-cue {
@@ -63,23 +75,20 @@ body {
   justify-content: center;
   gap: 12px;
   padding: 0 20px;
-  border: 1px solid rgb(255 255 255 / 72%);
+  border: 1px solid rgb(255 255 255 / 64%);
   border-radius: 999px;
   color: #fffaf4;
-  background: rgb(37 25 22 / 58%);
-  box-shadow: 0 8px 26px rgb(18 12 10 / 28%);
+  background: transparent;
   font: inherit;
-  font-size: 0.76rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  backdrop-filter: blur(10px);
   transition: background-color 160ms ease, transform 160ms ease;
 }
 
 .journey-cue:hover {
-  background: rgb(37 25 22 / 76%);
+  background: rgb(255 255 255 / 12%);
 }
 
 .journey-cue:focus-visible {
@@ -127,12 +136,13 @@ body {
   width: max-content;
   max-width: 90%;
   margin: 0;
-  color: #70584d;
+  color: #60443b;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1rem, 4.5vw, 1.125rem);
-  letter-spacing: 0.035em;
+  font-size: clamp(0.9rem, 2vw, 1.35rem);
+  letter-spacing: 0.02em;
   text-align: center;
   text-shadow: 0 1px 5px rgb(255 250 235 / 75%);
+  text-rendering: optimizeLegibility;
   transform: translateX(-50%);
 }
 
@@ -419,6 +429,18 @@ body {
 
   .countdown-label {
     font-size: 0.54rem;
+  }
+}
+
+@media (max-height: 500px) {
+  .wedding-venue {
+    font-size: 0.75rem;
+  }
+
+  .event-map-tab[data-event-map="wedding"] {
+    min-height: 30px;
+    padding-inline: 10px;
+    font-size: 0.68rem;
   }
 }
 

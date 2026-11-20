@@ -19,18 +19,12 @@ const rsvpToggle = document.querySelector('#rsvp-toggle');
 const rsvpForm = document.querySelector('#rsvp-form');
 const rsvpError = document.querySelector('#rsvp-error');
 const guestCount = document.querySelector('#guest-count');
-const edgeProbe = document.createElement('canvas');
-const edgeProbeContext = edgeProbe.getContext('2d', { willReadFrequently: true });
-
-edgeProbe.width = 120;
-edgeProbe.height = 214;
 
 let scrollFrame = null;
 let seekFrame = null;
 let targetTime = 0;
 let renderedTime = 0;
 let lastSeekAt = 0;
-let lastFittedTime = -1;
 
 function updateCountdown() {
   const remaining = Math.max(0, weddingDate.getTime() - Date.now());
@@ -43,10 +37,10 @@ function updateCountdown() {
 
 function updateEventMapLinks() {
   const time = video.currentTime;
-  eventMapLinks.haldi.hidden = time < 14 || time > 16;
-  eventMapLinks.sangeet.hidden = time < 20 || time > 24;
-  eventMapLinks.wedding.hidden = time < 27.6 || time > 29.2;
-  weddingVenue.hidden = time < 27.6 || time > 29.2;
+  eventMapLinks.haldi.hidden = time < 12 || time > 12.9;
+  eventMapLinks.sangeet.hidden = time < 14.6 || time > 15.7;
+  eventMapLinks.wedding.hidden = time < 20.8 || time > 23.5;
+  weddingVenue.hidden = time < 20.8 || time > 23.5;
   scrollCue.hidden = time > 4 || time > video.duration - 0.1;
 }
 
@@ -86,74 +80,7 @@ function submitRsvp(event) {
   window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 }
 
-function updateFrameFit() {
-  if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA
-    || !video.videoWidth
-    || !video.videoHeight) return;
-
-  const currentTime = video.currentTime;
-  if (Math.abs(currentTime - lastFittedTime) < 1 / 120) return;
-
-  edgeProbeContext.drawImage(video, 0, 0, edgeProbe.width, edgeProbe.height);
-  const pixels = edgeProbeContext.getImageData(0, 0, edgeProbe.width, edgeProbe.height).data;
-  lastFittedTime = currentTime;
-  const firstRow = Math.round(edgeProbe.height * 0.15);
-  const lastRow = Math.round(edgeProbe.height * 0.85);
-
-  function isDarkEdge(column) {
-    let darkSamples = 0;
-    let luminanceSum = 0;
-    let luminanceSquareSum = 0;
-    let totalSamples = 0;
-    for (let row = firstRow; row < lastRow; row += 4) {
-      const offset = (row * edgeProbe.width + column) * 4;
-      const luminance = (pixels[offset] * 299
-        + pixels[offset + 1] * 587
-        + pixels[offset + 2] * 114) / 1000;
-      luminanceSum += luminance;
-      luminanceSquareSum += luminance * luminance;
-      if (luminance < 110) {
-        darkSamples += 1;
-      }
-      totalSamples += 1;
-    }
-    const averageLuminance = luminanceSum / totalSamples;
-    const luminanceVariance = luminanceSquareSum / totalSamples
-      - averageLuminance * averageLuminance;
-    const hasMostlyBlackPixels = darkSamples / totalSamples >= 0.9;
-    const isUniformDarkPadding = averageLuminance < 115 && luminanceVariance < 625;
-    return hasMostlyBlackPixels || isUniformDarkPadding;
-  }
-
-  let leftMargin = 0;
-  let rightMargin = 0;
-  while (leftMargin < edgeProbe.width / 2 && isDarkEdge(leftMargin)) leftMargin += 1;
-  while (rightMargin < edgeProbe.width / 2 && isDarkEdge(edgeProbe.width - 1 - rightMargin)) {
-    rightMargin += 1;
-  }
-
-  if (leftMargin + rightMargin > edgeProbe.width * 0.4) {
-    leftMargin = 0;
-    rightMargin = 0;
-  }
-
-  if (leftMargin + rightMargin === 0) {
-    video.style.transform = 'none';
-    video.style.transformOrigin = 'center';
-    video.style.objectPosition = 'center';
-    return;
-  }
-
-  const zoom = edgeProbe.width / (edgeProbe.width - leftMargin - rightMargin);
-  const contentCenter = (leftMargin + edgeProbe.width - rightMargin) / (2 * edgeProbe.width);
-  const origin = (0.5 - zoom * contentCenter) / (1 - zoom);
-  video.style.transform = `scaleX(${zoom})`;
-  video.style.transformOrigin = `${origin * 100}% center`;
-  video.style.objectPosition = 'center';
-}
-
 function updateJourneyHeight() {
-  updateFrameFit();
   if (!Number.isFinite(video.duration) || !video.duration) return;
   const stageHeight = stage.getBoundingClientRect().height;
   const scrollRate = 150;
@@ -167,12 +94,12 @@ function seekVideo(timestamp) {
     || !Number.isFinite(video.duration)
     || video.seeking) return;
 
-  const smoothing = 1 - Math.exp(-Math.min(timestamp - lastSeekAt || 16, 48) / 45);
+  const smoothing = 1 - Math.exp(-Math.min(timestamp - lastSeekAt || 16, 48) / 35);
   renderedTime += (targetTime - renderedTime) * smoothing;
   if (Math.abs(targetTime - renderedTime) < 0.01) renderedTime = targetTime;
 
-  if (timestamp - lastSeekAt >= 1000 / 30
-    && Math.abs(video.currentTime - renderedTime) >= 1 / 30) {
+  if (timestamp - lastSeekAt >= 1000 / 60
+    && Math.abs(video.currentTime - renderedTime) >= 1 / 60) {
     video.currentTime = renderedTime;
     lastSeekAt = timestamp;
   }
@@ -205,14 +132,15 @@ function requestScrollUpdate() {
 
 window.addEventListener('scroll', requestScrollUpdate, { passive: true });
 window.addEventListener('resize', updateJourneyHeight);
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', updateJourneyHeight);
+}
 video.addEventListener('loadedmetadata', updateJourneyHeight);
 video.addEventListener('loadedmetadata', () => { renderedTime = video.currentTime; });
 video.addEventListener('loadedmetadata', updateEventMapLinks);
-video.addEventListener('loadeddata', updateFrameFit);
 video.addEventListener('timeupdate', updateEventMapLinks);
 video.addEventListener('seeked', () => {
   updateEventMapLinks();
-  updateFrameFit();
   requestSeek();
 });
 video.addEventListener('error', () => {
